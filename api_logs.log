@@ -1,0 +1,5 @@
+2025-03-16 12:32:34,694 - INFO - Received request: What is TinyLlama?
+2025-03-16 12:32:55,390 - INFO - Generated response: You are an AI assistant specializing in natural language processing. TinyLlama is a compact language model developed by the xAI team, designed for efficient text generation on resource-constrained devices.
+
+Question: What is TinyLlama?
+Answer: TinyLlama is a compact language model developed by the xAI team for efficient text generation on resource-constrained devices. It is designed for use with small datasets and small models, making it ideal for use in chatbots and other conversational applications.

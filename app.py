@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from pydantic import BaseModel
+import logging
+
+# Set up logging
+logging.basicConfig(filename='api_logs.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = FastAPI()
 
@@ -14,6 +19,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 @app.post("/generate")
 async def generate(input_data: TextInput):
+    # Log the incoming request
+    logging.info(f"Received request: {input_data.text}")
     # Provide context to guide the model
     context = "You are an AI assistant specializing in natural language processing. TinyLlama is a compact language model developed by the xAI team, designed for efficient text generation on resource-constrained devices."
     prompt = f"{context}\n\nQuestion: {input_data.text}\nAnswer:"
@@ -26,4 +33,7 @@ async def generate(input_data: TextInput):
         top_p=0.9,
         do_sample=True
     )
-    return {"response": tokenizer.decode(outputs[0], skip_special_tokens=True)}
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    # Log the response
+    logging.info(f"Generated response: {response}")
+    return {"response": response}
