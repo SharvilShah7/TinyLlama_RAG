@@ -14,15 +14,16 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 @app.post("/generate")
 async def generate(input_data: TextInput):
-    # Add a more specific prompt
-    prompt = f"Answer as a knowledgeable AI: {input_data.text}"
+    # Provide context to guide the model
+    context = "You are an AI assistant specializing in natural language processing. TinyLlama is a compact language model developed by the xAI team, designed for efficient text generation on resource-constrained devices."
+    prompt = f"{context}\n\nQuestion: {input_data.text}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt")
-    # Add generation parameters to control output
+    # Generation parameters
     outputs = model.generate(
         **inputs,
-        max_length=200,  # Limit response length
-        temperature=0.7,  # Control randomness (lower = more focused)
-        top_p=0.9,  # Use nucleus sampling for better diversity
-        do_sample=True  # Enable sampling for more natural responses
+        max_length=200,
+        temperature=0.7,
+        top_p=0.9,
+        do_sample=True
     )
     return {"response": tokenizer.decode(outputs[0], skip_special_tokens=True)}
